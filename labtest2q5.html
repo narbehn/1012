@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="question5.js"> </script>
+</head>
+<body>
+<div id="results"></div>
+</body>
+</html>
+and question5.js
+<script>
+function q5callback(json) {
+  var output = document.getElementById("results");
+  output.innerHTML = "Your output goes here";
+}
+function go() {
+  access("select * from collection", q5callback);
+}
+
+var ajax;
+var acallback=null;
+function access(query, callback)
+{
+  acallback = callback;
+  ajax = new XMLHttpRequest();
+  ajax.onreadystatechange = ajaxProcess;
+  ajax.open("GET", "http://127.0.0.1:8000/sql?query=" + query);
+  ajax.send(null);
+}
+function ajaxProcess() {
+  if((ajax.readyState == 4)&&(ajax.status == 200)){
+    ajaxCompleted(ajax.responseText)
+  }
+}
+function ajaxCompleted(text) {
+  if(acallback != null) {
+    var data = JSON.parse(text);
+    acallback(data);
+  }
+}
+onload=go;
+</script>
+
+This code utilizes the 'collections' table represented in the database in the virtual box
+used in the last two labs. Cut and paste the above code into your virtual box.
+Modify the code given in question5.js so that upon completion, the content of the results
+<div> is replaced with the sum of the year's of the albums in the collections table.
+Feel free to modify the above question5.js code in any manner you wish.
+Your code should work with any collection of records that follows the schema used for the
+collections table. Upload your revised question5.js file to the moodle assignment associated
+with your lab test. Only upload the revised file question5.js to the moodle site.
